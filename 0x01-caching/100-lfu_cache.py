@@ -17,17 +17,17 @@ class LFUCache(BaseCaching):
         """ Add an item in the cache using LFU algorithm """
         if key is not None and item is not None:
             if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                min_frequency = min(self.frequency.values())
-                candidates = [k for k, v in self.frequency.items() if v == min_frequency]
+                hz = min(self.frequency.values())
+                candidates = [k for k, v in self.frequency.items() if v == hz]
 
                 if len(candidates) == 1:
-                    discarded_key = candidates[0]
+                    lfu = candidates[0]
                 else:
-                    discarded_key = min(self.cache_data, key=lambda k: self.frequency[k])
+                    lfu = min(self.cache_data, key=lambda k: self.frequency[k])
 
-                del self.cache_data[discarded_key]
-                del self.frequency[discarded_key]
-                print("DISCARD: {}".format(discarded_key))
+                del self.cache_data[lfu]
+                del self.frequency[lfu]
+                print("DISCARD: {}".format(lfu))
 
             self.cache_data[key] = item
             self.frequency[key] = self.frequency.get(key, 0) + 1
