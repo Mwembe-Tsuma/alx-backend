@@ -6,7 +6,8 @@ from flask_babel import Babel
 
 
 class Config:
-    """Config class"""
+    """Configuration class"""
+
     DEBUG = True
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
@@ -14,14 +15,14 @@ class Config:
 
 
 app = Flask(__name__)
-babel = Babel(app)
 app.config.from_object(Config)
 app.url_map.strict_slashes = False
+babel = Babel(app)
 
 
 @babel.localeselector
 def get_locale() -> str:
-    """Selector"""
+    """Locale Selector"""
     locale = request.args.get('locale')
     if locale in app.config['LANGUAGES']:
         return locale
@@ -35,4 +36,4 @@ def index() -> str:
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run():
