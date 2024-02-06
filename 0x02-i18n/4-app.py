@@ -2,38 +2,36 @@
 """Flask app with forced locale support"""
 
 from flask import Flask, render_template, request
-from flask_babel import Babel
+from flask_babel import Babel, _
+
+app = Flask(__name__)
+babel = Babel(app)
 
 
 class Config:
-    """Configuration class"""
-
-    DEBUG = True
+    """Config class"""
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
-app = Flask(__name__)
 app.config.from_object(Config)
-app.url_map.strict_slashes = False
-babel = Babel(app)
 
 
 @babel.localeselector
-def get_locale() -> str:
-    """Locale Selector"""
-    locale = request.args.get('locale')
-    if locale in app.config['LANGUAGES']:
-        return locale
+def get_locale():
+    """Loacle selector"""
+    if 'locale' in request.args and request.args['locale'] in app.config['LANGUAGES']:
+        return request.args['locale']
+
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/')
-def index() -> str:
+def index():
     """Default route"""
-    return render_template("4-index.html")
+    return render_template('4-index.html', title=_('home_title'), header=_('home_header'))
 
 
 if __name__ == "__main__":
-    app.run():
+    app.run()
