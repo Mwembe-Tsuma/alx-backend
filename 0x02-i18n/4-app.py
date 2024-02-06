@@ -4,10 +4,6 @@
 from flask import Flask, render_template, request
 from flask_babel import Babel
 
-app = Flask(__name__)
-babel = Babel(app)
-app.url_map.strict_slashes = False
-
 
 class Config:
     """Config class"""
@@ -17,7 +13,10 @@ class Config:
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
+app = Flask(__name__)
+babel = Babel(app)
 app.config.from_object(Config)
+app.url_map.strict_slashes = False
 
 
 @babel.localeselector
