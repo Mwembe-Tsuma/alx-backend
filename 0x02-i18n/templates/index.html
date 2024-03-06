@@ -13,6 +13,6 @@
         <p>{{ _('not_logged_in') }}</p>
     {% endif %}
 
-    <h1>{{ _('home_header') }}</h1>
+    <p>{{ lazy_gettext('current_time_is') | format(current_time=current_time) }}</p>
 </body>
 </html>
